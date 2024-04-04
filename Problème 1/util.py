@@ -36,8 +36,9 @@ def affiche_tournee(coords):
     x, y = zip((0, 0), *coords, (0, 0))
     fig, ax = plt.subplots()
 
+    ax.scatter(x, y, s=5)
     ax.plot(x, y)
     ax.plot(0, 0, "o", color="red")
     ax.set_title("Distance totale : " + str(round(distance_totale(coords), 3)))
 
-    plt.show()
+    # plt.show()
