@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 
 with open('results.json', mode='r') as file:
-	datas = json.load(file)
+    datas = json.load(file)
 
 ns, times = np.array(datas)
 
@@ -12,12 +12,13 @@ discard_up_to = 25
 ns = ns[discard_up_to:]
 times = times[discard_up_to:]
 
-n_smooth = 1001  # must be odd (because I'm too lazy to cover the case where it is even)
+n_smooth = 301  # must be odd (because I'm too lazy to cover the case where it is even)
 mid_smooth = n_smooth // 2
-mask = np.array([
-	1 / ((abs(mid_smooth - i) + 3)**0.7 * n_smooth)
-	for i in range(n_smooth)
-])
+# mask = np.array([
+#     1 / ((abs(mid_smooth - i) + 3)**0.7 * n_smooth)
+#     for i in range(n_smooth)
+# ])
+mask = np.array([1 / n_smooth] * n_smooth)
 norm = mask.sum()
 mask = mask / norm
 
@@ -31,9 +32,12 @@ print(flush=True)
 # plt.scatter(ns, times / ns, s=5)
 # plt.scatter(ns, smoothened_times / ns, s=5)
 # plt.plot(ns, times / (ns * np.log2(ns)))
-plt.plot(ns, smoothened_times / (ns * np.log2(ns)))
-# plt.plot(ns, smoothened_times)
+# plt.plot(ns, smoothened_times / (ns * np.log2(ns)))
+plt.plot(ns, smoothened_times)
 # plt.scatter(ns, abs(times - smoothened_times) / times, s=5)
 
+plt.xlabel('n')
+plt.ylabel(r'Temps d\'exécution brut$')
+# plt.ylabel(r'Temps d\'exécution divisé par $n \log(n)$')
 plt.tight_layout()
 plt.show()

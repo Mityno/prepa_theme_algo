@@ -47,7 +47,6 @@ def bruteforce(lst, start_point=None):
 
 #@time_func
 def solve_efficient(lst):
-    n = len(lst)
     lst = lst[:]
     # tri selon la 2e composante, puis selon la 1re
     lst.sort(key=lambda x: x[::-1])
@@ -66,9 +65,9 @@ def solve_efficient(lst):
 # lst = [(2, 5), (3, 9), (7, 10), (8, 9), (10, 11), (9, 10), (12, 13)]
 # lst = [(2, 5), (3, 9), (7, 10)]
 
-n = 8
-lower_bound, higher_bound = 0, 10
-nb_tries = 100
+n = 20
+lower_bound, higher_bound = 0, 15
+nb_tries = 1_000
 for _ in range(nb_tries):
     # création de la liste de test
     lst = []
@@ -78,7 +77,7 @@ for _ in range(nb_tries):
         lst.append((start, end))
 
     try:
-        assert (len(bruteforce(lst)) == len(solve_efficient(lst)))
+        assert len(bruteforce(lst)) == len(solve_efficient(lst))
     except AssertionError:
         print(lst)
         exit()
@@ -92,7 +91,7 @@ for _ in range(nb_tries):
 # vérification de l'efficacité temporelle de l'algorithme glouton
 # lower_bound, higher_bound = 0, 60
 # times = []
-# # ns = list(map(int, np.linspace(20, 100_000, 10_000, dtype=int)))
+# ns = list(map(int, np.linspace(20, 100_000, 10_000, dtype=int)))
 # ns = list(np.linspace(20, 10_000, 400, dtype=int))
 
 # lst = []
