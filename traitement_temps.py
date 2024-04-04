@@ -12,7 +12,7 @@ discard_up_to = 25
 ns = ns[discard_up_to:]
 times = times[discard_up_to:]
 
-n_smooth = 131  # must be odd (because I'm too lazy to cover the case where it is even)
+n_smooth = 1001  # must be odd (because I'm too lazy to cover the case where it is even)
 mid_smooth = n_smooth // 2
 mask = np.array([
 	1 / ((abs(mid_smooth - i) + 3)**0.7 * n_smooth)

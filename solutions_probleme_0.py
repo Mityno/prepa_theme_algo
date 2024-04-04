@@ -49,74 +49,78 @@ def bruteforce(lst, start_point=None):
 def solve_efficient(lst):
     n = len(lst)
     lst = lst[:]
+    # tri selon la 2e composante, puis selon la 1re
     lst.sort(key=lambda x: x[::-1])
 
     solution = []
+    # aucun créneau n'a encore été pris, donc on prend une valeur de fin de créneau qui est la "plus petite" (dans R)
     last_end = float('-inf')
     for start, end in lst:
+        # si le créneau commence après que le dernier sélectionné ait fini
         if start >= last_end:
             solution.append((start, end))
             last_end = end
     return solution
 
 
-
 # lst = [(2, 5), (3, 9), (7, 10), (8, 9), (10, 11), (9, 10), (12, 13)]
 # lst = [(2, 5), (3, 9), (7, 10)]
 
-# nb_tries = 100
-# for _ in range(nb_tries):
-#     n = 8
-#     lower_bound, higher_bound = 0, 10
-#     lst = []
-#     for _ in range(n):
-#         start = random.randrange(lower_bound, higher_bound - 1)
-#         end = random.randrange(start + 1, higher_bound)
-#         lst.append((start, end))
+n = 8
+lower_bound, higher_bound = 0, 10
+nb_tries = 100
+for _ in range(nb_tries):
+    # création de la liste de test
+    lst = []
+    for _ in range(n):
+        start = random.randrange(lower_bound, higher_bound - 1)
+        end = random.randrange(start + 1, higher_bound)
+        lst.append((start, end))
 
-#     print(_)
-#     try:
-#         assert (len(solve_more_efficient(lst)) == len(solve_efficient(lst)))
-#     except AssertionError:
-#         print(lst)
-#         exit()
-#     # result = solve_more_efficient(lst)
-#     # print('-' * 50)
-#     # print(result)
-#     # print(solve_efficient(lst))
-#     # print('-' * 50)
+    try:
+        assert (len(bruteforce(lst)) == len(solve_efficient(lst)))
+    except AssertionError:
+        print(lst)
+        exit()
+    # result = solve_more_efficient(lst)
+    # print('-' * 50)
+    # print(result)
+    # print(solve_efficient(lst))
+    # print('-' * 50)
 
-lower_bound, higher_bound = 0, 60
-times = []
-ns = list(map(int, np.linspace(20, 100_000, 10_000, dtype=int)))
-# ns = list(map(int, np.linspace(20, 100, 10, dtype=int)))
 
-lst = []
-for _ in range(max(ns)):
-    start = random.randrange(lower_bound, higher_bound - 1)
-    end = random.randrange(start + 1, higher_bound)
-    lst.append((start, end))
-print('Started', flush=True)
+# vérification de l'efficacité temporelle de l'algorithme glouton
+# lower_bound, higher_bound = 0, 60
+# times = []
+# # ns = list(map(int, np.linspace(20, 100_000, 10_000, dtype=int)))
+# ns = list(np.linspace(20, 10_000, 400, dtype=int))
 
-lst_times = 0
-for n in ns:
-    bef = time.perf_counter()
-    temp_lst = lst[:n]
-    aft = time.perf_counter()
-    lst_times += aft - bef
+# lst = []
+# for _ in range(max(ns)):
+#     start = random.randrange(lower_bound, higher_bound - 1)
+#     end = random.randrange(start + 1, higher_bound)
+#     lst.append((start, end))
+# print('Started', flush=True)
 
-    bef = time.perf_counter_ns()
-    solve_efficient(temp_lst)
-    aft = time.perf_counter_ns()
+# lst_times = 0
+# for n in ns:
+#     bef = time.perf_counter()
+#     temp_lst = lst[:n]
+#     aft = time.perf_counter()
+#     lst_times += aft - bef
 
-    times.append((aft - bef) * 1e-9)
+#     bef = time.perf_counter_ns()
+#     solve_efficient(temp_lst)
+#     aft = time.perf_counter_ns()
 
-with open('results.json', mode='w', encoding='utf-8') as file:
-    json.dump([ns, times], file)
+#     times.append((aft - bef) * 1e-9)
 
-print('solve time :', sum(times))
-print('list manipulation time :', lst_times, flush=True)
+# # with open('results.json', mode='w', encoding='utf-8') as file:
+# #     json.dump([ns, times], file)
 
-plt.plot(ns, np.array(times) / ns)
-# plt.plot(ns, ns * 5e-7)
-plt.show()
+# print('solve time :', sum(times))
+# print('list manipulation time :', lst_times, flush=True)
+
+# plt.scatter(ns, np.array(times) / (ns * np.log2(ns)), s=10)
+# # plt.plot(ns, ns * 5e-7)
+# plt.show()
