@@ -2,15 +2,21 @@
 
 import util
 import time
+from matplotlib import pyplot as plt
 
 
 def bruteforce(coords):
-    solutions = []
+    solution = None
+    sol_distance = float('inf')
 
     def inner(coords, curr):
+        nonlocal solution, sol_distance
 
         if not coords:
-            solutions.append(curr[:])
+            curr_distance = util.distance_totale(curr)
+            if curr_distance < sol_distance:
+                solution = curr[:]
+                sol_distance = curr_distance
             return
 
         for coord in frozenset(coords):
@@ -22,7 +28,7 @@ def bruteforce(coords):
 
     coords = list(map(tuple, coords))
     inner(set(coords), [])
-    return min(solutions, key=util.distance_totale, default=[])
+    return solution
 
 
 def bruteforce_backtracking(coords):
