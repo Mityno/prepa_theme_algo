@@ -22,12 +22,19 @@ def distance(p1, p2):
     return ((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2) ** (1 / 2)
 
 
-def distance_totale(coords):
+def distance_avec_entree(coords):
     if len(coords) == 0:
         return 0
     dist = distance((0, 0), coords[0]) + distance(coords[-1], (0, 0))
     for i in range(1, len(coords)):
         dist += distance(coords[i], coords[i - 1])
+    return dist
+
+
+def distance_totale_chemin(coords):
+    dist = 0
+    for i in range(len(coords) - 1):
+        dist += distance(coords[i], coords[i + 1])
     return dist
 
 
@@ -39,7 +46,7 @@ def affiche_tournee(coords, show=True):
     ax.scatter(x, y, s=8)
     ax.scatter(0, 0, color="red")
     ax.plot(x, y)
-    ax.set_title("Distance totale : " + str(round(distance_totale(coords), 3)))
+    ax.set_title(f"Distance totale : {distance_avec_entree(coords):.3f}")
 
     if show:
         plt.show()
