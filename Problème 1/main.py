@@ -3,6 +3,7 @@
 import util
 import time
 from matplotlib import pyplot as plt
+import bruteforces
 
 
 def calcule_tournee(coords):
@@ -14,9 +15,9 @@ coords = util.lire_fichier_coords("exemple_2.txt")[50:59]
 # print(coords)
 
 bef = time.perf_counter()
-result_bruteforce = bruteforce(coords)
+result_bruteforce = bruteforces.bruteforce(coords)
 aft = time.perf_counter()
-result_backtracking = bruteforce_backtracking(coords)
+result_backtracking = bruteforces.bruteforce_backtracking(coords)
 
 assert util.distance_totale(result_bruteforce) == util.distance_totale(result_backtracking)
 
