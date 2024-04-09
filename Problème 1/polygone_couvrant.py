@@ -2,10 +2,12 @@ import util
 import bruteforces
 from matplotlib import pyplot as plt
 from convex_hull import graham_scan
+import time
 
 
 def rotate_list(lst, n):
     return lst[n:] + lst[:n]
+
 
 def reduction_polygone_couvrant(coords, polygon_summits, show=False):
     # on enlève les coordonnées des sommets déjà atteints
@@ -56,10 +58,10 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 # 2. On fait la même chose, mais sans s'arrêter : on trouve un chemin convexe qui "minimise" la distance
 
 if __name__ == '__main__':
-    # coords = util.lire_fichier_coords('exemple_losange_dense.txt')
-    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
+    coords = util.lire_fichier_coords(r'exemple_2.txt')
     coords = list(map(tuple, coords))
-    print(coords)
+    # print(coords)
 
     coords.append((0, 0))
     plt.scatter(*zip(*coords), s=10)
@@ -68,19 +70,21 @@ if __name__ == '__main__':
 
     xs, ys = zip(*coords)
     plt.scatter(xs, ys)
-    xp, yp = zip(*(polygon_summits+polygon_summits[0]))
+    xp, yp = zip(*(polygon_summits+[polygon_summits[0]]))
     plt.plot(xp, yp)
     plt.scatter(xp, yp)
     plt.show()
 
+    bef = time.perf_counter()
     polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
+    aft = time.perf_counter()
+    print(f'Polygon took : {aft - bef:.2f}s')
 
     start_pos = polygon_couvrant.index((0, 0))
     polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
     polygon_couvrant.remove((0, 0))
 
     coords.remove((0, 0))
-    print(len(polygon_couvrant), flush=True)
     util.affiche_tournee(polygon_couvrant, show=False)
 
     # result_backtracking = bruteforces.bruteforce_backtracking(coords)
