@@ -17,16 +17,9 @@ print(len(coords))
 # coords = util.lire_fichier_coords("exemple_1.txt")
 # print(coords)
 
-<<<<<<< HEAD
 # bef = time.perf_counter()
 # result_backtracking = bruteforces.bruteforce_backtracking(coords)
 # aft = time.perf_counter()
-=======
-bef = time.perf_counter()
-result_bruteforce = bruteforces.bruteforce(coords)
-aft = time.perf_counter()
-result_backtracking = bruteforces.bruteforce_backtracking(coords)
->>>>>>> 04f1b632f7ac89da117a21511598812db8e97c18
 
 bef2 = time.perf_counter()
 result_backtracking_2 = bruteforces.bruteforce_backtracking_2(tuple(coords))
