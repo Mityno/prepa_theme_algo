@@ -1,14 +1,18 @@
 import util
 import bruteforces
 from matplotlib import pyplot as plt
+from convex_hull import graham_scan
 
 
 def rotate_list(lst, n):
     return lst[n:] + lst[:n]
 
-def reduction_polygone_couvrant(coords, polygon_summits):
+def reduction_polygone_couvrant(coords, polygon_summits, show=False):
     # on enlève les coordonnées des sommets déjà atteints
-    coords = [coord for coord in coords if coord not in polygon_summits]
+    for summit in polygon_summits:
+        coords.remove(summit)
+
+    polygon_summits.append(polygon_summits[0])
 
     while coords:
         min_coord = None
@@ -19,7 +23,7 @@ def reduction_polygone_couvrant(coords, polygon_summits):
         for coord in coords:
             for i in range(1, len(polygon_summits)):
                 polygon_summits.insert(i, coord)
-                curr_distance = util.distance_avec_entree(polygon_summits)
+                curr_distance = util.distance_totale_chemin(polygon_summits)
                 polygon_summits.pop(i)
 
                 if curr_distance < min_updated_distance:
@@ -31,8 +35,17 @@ def reduction_polygone_couvrant(coords, polygon_summits):
         polygon_summits.insert(min_coord_pos, min_coord)
         coords.remove(min_coord)
 
-        # util.affiche_tournee(polygon_summits)
+        if show:
+            if coords:
+                xs, ys = zip(*coords)
+                plt.scatter(xs, ys)
+            xp, yp = zip(*polygon_summits)
+            plt.plot(xp, yp)
+            plt.scatter(xp, yp)
+            plt.show()
 
+
+    polygon_summits.pop()
     return polygon_summits
 
 # Pour trouver le polygone entourant initial :
@@ -44,26 +57,23 @@ def reduction_polygone_couvrant(coords, polygon_summits):
 
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords('exemple_losange_dense.txt')
-    coords = util.lire_fichier_coords('exemple_2.txt')[20:40]
+    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
     coords = list(map(tuple, coords))
     print(coords)
-    plt.scatter(*zip(*coords), s=10)
 
     coords.append((0, 0))
-    polygon_summits = [
-        min(coords, key=lambda coord: coord[0]),
-        min(coords, key=lambda coord: coord[1]),
-        max(coords, key=lambda coord: coord[0]),
-        max(coords, key=lambda coord: coord[1]),
-    ]
-    # on enlève les doublons s'il y en a, en conservant l'ordre déjà établi
+    plt.scatter(*zip(*coords), s=10)
+    polygon_summits = graham_scan(coords)
     polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
 
-    # polygon_summits = [min(coords), max(coords)]
+    xs, ys = zip(*coords)
+    plt.scatter(xs, ys)
+    xp, yp = zip(*(polygon_summits+polygon_summits[0]))
+    plt.plot(xp, yp)
+    plt.scatter(xp, yp)
+    plt.show()
 
-    util.affiche_tournee(polygon_summits)
-
-    polygon_couvrant = reduction_polygone_couvrant(coords, polygon_summits)
+    polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
 
     start_pos = polygon_couvrant.index((0, 0))
     polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
@@ -72,10 +82,6 @@ if __name__ == '__main__':
     coords.remove((0, 0))
     print(len(polygon_couvrant), flush=True)
     util.affiche_tournee(polygon_couvrant, show=False)
-
-    # polygon_couvrant_2 = [(0, 2), (-1, 2), (-1, 3), (-4, 3), (0, 6), (0, 4), (1, 4), (1, 3), (0, 3), (1, 2), (4, 2)]
-    # print(len(polygon_couvrant_2))
-    # util.affiche_tournee(polygon_couvrant_2)
 
     # result_backtracking = bruteforces.bruteforce_backtracking(coords)
     # util.affiche_tournee(result_backtracking, show=False)
