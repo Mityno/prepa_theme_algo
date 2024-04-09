@@ -1,5 +1,8 @@
 import util
+<<<<<<< HEAD
 import functools
+=======
+>>>>>>> 04f1b632f7ac89da117a21511598812db8e97c18
 
 
 def bruteforce(coords):
@@ -10,7 +13,11 @@ def bruteforce(coords):
         nonlocal solution, sol_distance
 
         if not coords:
+<<<<<<< HEAD
             curr_distance = util.distance_avec_entree(curr)
+=======
+            curr_distance = util.distance_totale(curr)
+>>>>>>> 04f1b632f7ac89da117a21511598812db8e97c18
             if curr_distance < sol_distance:
                 solution = curr[:]
                 sol_distance = curr_distance
@@ -35,6 +42,7 @@ def bruteforce_backtracking(coords):
     def inner(coords, curr):
         nonlocal solution, sol_distance
 
+<<<<<<< HEAD
         if util.distance_avec_entree(curr) >= sol_distance:
             return
 
@@ -78,6 +86,13 @@ def bruteforce_backtracking_2(coords):
 
         if not coords:
             curr_distance = util.distance_avec_entree(curr)
+=======
+        if util.distance_totale(curr) > sol_distance:
+            return
+
+        if not coords:
+            curr_distance = util.distance_totale(curr)
+>>>>>>> 04f1b632f7ac89da117a21511598812db8e97c18
             if curr_distance < sol_distance:
                 solution = curr[:]
                 sol_distance = curr_distance
