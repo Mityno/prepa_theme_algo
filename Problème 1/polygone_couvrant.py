@@ -3,9 +3,6 @@ import bruteforces
 from matplotlib import pyplot as plt
 
 
-def rotate_list(lst, n):
-    return lst[n:] + lst[:n]
-
 def reduction_polygone_couvrant(coords, polygon_summits):
     # on enlève les coordonnées des sommets déjà atteints
     coords = [coord for coord in coords if coord not in polygon_summits]

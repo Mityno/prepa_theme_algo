@@ -4,6 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def rotate_list(lst, n):
+    return lst[n:] + lst[:n]
+
+
+
 def lire_fichier_coords(nom_fichier):
     coords = []
     with open(nom_fichier) as f:
