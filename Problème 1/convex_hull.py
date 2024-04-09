@@ -3,7 +3,12 @@ import matplotlib.pyplot as plt
 from util import lire_fichier_coords
 
 
-def angle(pivot, point) -> float:
+def angle(pivot : tuple[float], point : tuple[float]) -> float:
+    """
+    Renvoie l'angle formé entre l'horizontale et le segment [pivot, point], compté en sens trigonométrique, en le supposant compris entre 0 et pi. 
+    """
+
+    # Si le point est le pivot, renvoie -1. pour qu'il soit compté comme ayant l'angle minimal
     if point == pivot:
         return -1.
     
@@ -22,14 +27,24 @@ def right_turn(point1, point2, point3):
     return cross_prod < 0
 
 def graham_scan(coords):
+    coords = coords.copy()
     coords.sort(key=lambda pt : pt[::-1])
     angle_sort(coords)
     hull = coords[:2]
     for i, point in enumerate(coords, start=2):
-        if right_turn(hull[-2], hull[-1], point):
+        while right_turn(hull[-2], hull[-1], point):
             hull.pop()
         hull.append(point)
     return hull
 
+
+
+if __name__ == '__main__':
+    coords = lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    coords = list(map(tuple, coords))
+    hull = graham_scan(coords)
+    plt.scatter([x for x,y in coords], [y for x,y in coords])
+    plt.plot([x for x,y in hull], [y for x,y in hull])
+    plt.show()
 
 
