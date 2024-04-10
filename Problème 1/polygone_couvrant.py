@@ -21,12 +21,14 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
         min_updated_distance = float('inf')
         min_coord_pos = None
 
+        last_polygon_distance = util.distance_totale_chemin(polygon_summits)
+
         # trouver le point pour lequel casser un segment
         for coord in coords:
             for i in range(1, len(polygon_summits)):
-                polygon_summits.insert(i, coord)
-                curr_distance = util.distance_totale_chemin(polygon_summits)
-                polygon_summits.pop(i)
+                curr_distance = last_polygon_distance
+                curr_distance -= util.distance(polygon_summits[i-1], polygon_summits[i])
+                curr_distance += util.distance(polygon_summits[i-1], coord) + util.distance(coord, polygon_summits[i])
 
                 if curr_distance < min_updated_distance:
                     min_coord = coord
@@ -59,14 +61,17 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'exemple_2.txt')
+    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
     coords = list(map(tuple, coords))
     # print(coords)
 
     coords.append((0, 0))
     plt.scatter(*zip(*coords), s=10)
+    bef = time.perf_counter()
     polygon_summits = graham_scan(coords)
     polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
+    aft = time.perf_counter()
+    print(f'Convex hull took : {aft - bef:.2e}s')
 
     xs, ys = zip(*coords)
     plt.scatter(xs, ys)
