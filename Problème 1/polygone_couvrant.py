@@ -59,6 +59,24 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 
 # 2. On fait la même chose, mais sans s'arrêter : on trouve un chemin convexe qui "minimise" la distance
 
+
+def path(coords: list[tuple]):
+    coords.append((0,0))
+
+    polygon_summits = graham_scan(coords)
+    polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
+
+    polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
+
+    start_pos = polygon_couvrant.index((0, 0))
+    polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
+
+    polygon_couvrant.remove((0, 0))
+    coords.remove((0, 0))
+    return polygon_couvrant, util.distance_avec_entree(polygon_couvrant)
+
+
+
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
     coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
