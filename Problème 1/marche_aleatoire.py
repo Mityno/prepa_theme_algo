@@ -5,12 +5,6 @@ import util
 
 def get_path(path_indices, coords):
     return coords[path_indices]
-    for i in range(len(path_indices) - 1):
-        final_path.append(
-            (coords[path_indices[i]], coords[path_indices[i+1]])
-        )
-    return final_path
-
 
 
 def simulate_weighted_walk(weights, dist_mat, start=None):
@@ -28,7 +22,7 @@ def simulate_weighted_walk(weights, dist_mat, start=None):
 
     while (dist_mat < float('inf')).any():
 
-        desirability = pow((1 / dist_arr), dist_pow) * pow(weights_arr, weight_pow)
+        desirability = np.power((1 / dist_arr), dist_pow) * np.power(weights_arr, weight_pow)
         # normalize desirability so that it sums up to 1
         norm = desirability.sum()
         desirability = desirability / norm
@@ -59,10 +53,10 @@ def desirability_path_search(coords, nb_era=50, nb_sim_per_era=10, start_index=N
 
     for era_index in range(1, nb_era + 1):
         paths = []
-        weights_reduced = weights / (n * era_index)
+        weights_reduced = weights / era_index
         # print(weights[:5, :5])
         # print(weights_reduced[:5, :5])
-        # print(weights_reduced.sum(), weights.sum() - n**2)
+        print(weights_reduced.sum(), weights.sum() - n**2)
         # print()
         for _ in range(nb_sim_per_era):
             path = simulate_weighted_walk(weights_reduced, dist_mat, start_index)
@@ -77,18 +71,32 @@ def desirability_path_search(coords, nb_era=50, nb_sim_per_era=10, start_index=N
     return get_path(final_path_indices, coords)
 
 
-# coords = util.lire_fichier_coords('exemple_1.txt')
+# coords = util.lire_fichier_coords('exemple_losange_dense.txt')
 coords = util.lire_fichier_coords('exemple_2.txt')
-(start_index, _), _ = np.where(coords == (0, 0))
+(start_index,) , = np.where((coords == (0, 0)).sum(axis=1) == 2)
 
-dist_pow = 8
-weight_pow = 8
+dist_pow = 18
+weight_pow = 7
+nb_era = 100
+nb_sim_per_era = 40
 
 bef = time.perf_counter()
-tournee = desirability_path_search(coords, nb_era=100, nb_sim_per_era=20, start_index=start_index)
+tournee = desirability_path_search(
+    coords,
+    nb_era=nb_era, nb_sim_per_era=nb_sim_per_era,
+    start_index=start_index
+)
 aft = time.perf_counter()
 print(f'Path search took : {aft - bef:.2f}s', flush=True)
-util.affiche_tournee(tournee)
+
+# util.affiche_tournee(tournee, show=False)
+
+bef = time.perf_counter()
+unknoted_tournee = util.unknot_path(tournee)
+aft = time.perf_counter()
+
+print(f'Unknoting took : {aft - bef:.2f}s', flush=True)
+util.affiche_tournee(unknoted_tournee)
 
 # path_indices = simulate_weighted_walk(weights, dist_mat, start=start_index)
 # tournee = get_path(path_indices, coords)

@@ -79,11 +79,10 @@ def path(coords: list[tuple]):
 
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'exemple_2.txt')[50:61]
+    coords = util.lire_fichier_coords(r'exemple_2.txt')
     coords = list(map(tuple, coords))
     # print(coords)
 
-    coords.append((0, 0))
     plt.scatter(*zip(*coords), s=10)
     bef = time.perf_counter()
     polygon_summits = graham_scan(coords)
@@ -104,10 +103,11 @@ if __name__ == '__main__':
     print(f'Polygon took : {(aft - bef)*1e-9:.2e}s')
 
     start_pos = polygon_couvrant.index((0, 0))
-    polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
-    polygon_couvrant.remove((0, 0))
+    # polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
+    polygon_couvrant = rotate_list(polygon_couvrant, start_pos + 1)
+    print(polygon_couvrant)
+    polygon_couvrant.pop()
 
-    coords.remove((0, 0))
     util.affiche_tournee(polygon_couvrant, show=False)
 
     # result_backtracking = bruteforces.bruteforce_backtracking(coords)
