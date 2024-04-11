@@ -4,9 +4,7 @@ from util import lire_fichier_coords
 
 
 def angle(pivot : tuple[float], point : tuple[float]) -> float:
-    """
-    Renvoie l'angle formé entre l'horizontale et le segment [pivot, point], compté en sens trigonométrique, en le supposant compris entre 0 et pi. 
-    """
+    """Renvoie l'angle formé entre l'horizontale et le segment [pivot, point], compté en sens trigonométrique, en le supposant compris entre 0 et pi."""
 
     # Si le point est le pivot, renvoie -1. pour qu'il soit compté comme ayant l'angle minimal
     if point == pivot:
@@ -21,12 +19,12 @@ def angle_sort(coords):
     coords.sort(key=lambda point: angle(pivot, point))
     return
 
-def right_turn(point1, point2, point3):
+def right_turn(point1, point2, point3) -> bool:
     (x1,y1),(x2,y2),(x3,y3) = point1, point2, point3
     cross_prod = (x2-x1)*(y3-y1) - (y2-y1)*(x3-x1) 
     return cross_prod < 0
 
-def graham_scan(coords):
+def graham_scan(coords: list[tuple[float, float]]) -> list[tuple[float, float]]:
     coords = coords.copy()
     coords.sort(key=lambda pt : pt[::-1])
     angle_sort(coords)
