@@ -83,8 +83,8 @@ def path(coords: list[tuple]):
 
 
 if __name__ == "__main__":
-    # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r"exemple_2.txt")
+    coords = util.lire_fichier_coords('exemple_losange_dense.txt')
+    # coords = util.lire_fichier_coords(r"exemple_2.txt")
     coords = list(map(tuple, coords))
     # print(coords)
 

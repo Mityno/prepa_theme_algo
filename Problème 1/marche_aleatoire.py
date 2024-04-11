@@ -1,10 +1,7 @@
 import numpy as np
 import time
 import util
-
-
-def get_path(path_indices, coords):
-    return coords[path_indices]
+from matplotlib import pyplot as plt
 
 
 def simulate_weighted_walk(weights, dist_mat, start=None):
@@ -42,6 +39,7 @@ def simulate_weighted_walk(weights, dist_mat, start=None):
 
 def desirability_path_search(coords, nb_era=50, nb_sim_per_era=10, start_index=None):
     n = len(coords)
+    coords = np.array(coords)
     weights = np.array([1.] * n**2).reshape(n, n)
 
     dist_mat = np.array([
@@ -53,7 +51,7 @@ def desirability_path_search(coords, nb_era=50, nb_sim_per_era=10, start_index=N
     for era_index in range(1, nb_era + 1):
         paths = []
         for _ in range(nb_sim_per_era):
-            path = simulate_weighted_walk(weights, dist_mat, start_index)
+            path = simulate_weighted_walk(weights, dist_mat)
             paths.append(path)
 
         for path in paths:
@@ -68,33 +66,49 @@ def desirability_path_search(coords, nb_era=50, nb_sim_per_era=10, start_index=N
             weights[x, y] = 1
 
     final_path_indices = simulate_weighted_walk(weights, dist_mat, start_index)
-    return get_path(final_path_indices, coords)
+    # last and first element are [0, 0] and shouldn't be returned
+    final_path = coords[final_path_indices]
+    final_path_unknoted = util.unknot_path(final_path)
+    return final_path_unknoted[1:-1]
 
 
-# coords = util.lire_fichier_coords('exemple_losange_dense.txt')
-coords = util.lire_fichier_coords('exemple_2.txt')
-(start_index, ), = np.where((coords == (0, 0)).sum(axis=1) == 2)
-
-# Settings
-dist_pow = 10
-weight_pow = 1
-nb_era = 700
+# Parameters
+dist_pow = 11
+weight_pow = 2
+nb_era = 65
 nb_sim_per_era = 20
 
-bef = time.perf_counter()
-tournee = desirability_path_search(
-    coords,
-    nb_era=nb_era, nb_sim_per_era=nb_sim_per_era,
-    start_index=start_index
-)
-aft = time.perf_counter()
-print(f'Path search took : {aft - bef:.2f}s', flush=True)
 
-# util.affiche_tournee(tournee, show=False)
+if __name__ == '__main__':
+    # A few examples of coordinates to test the program on
+    # coords = util.lire_fichier_coords('exemple_losange_dense.txt')
+    # coords = util.random_coords(200)
+    coords = util.lire_fichier_coords('exemple_2.txt')
 
-bef = time.perf_counter()
-unknoted_tournee = util.unknot_path(tournee)
-aft = time.perf_counter()
+    coords = list(map(tuple, coords))
+    if (0, 0) not in coords:
+        coords.append((0, 0))
+    coords = np.array(coords)
+    (start_index, ), = np.where((coords == (0, 0)).sum(axis=1) == 2)
 
-print(f'Unknoting took : {aft - bef:.2f}s', flush=True)
-util.affiche_tournee(unknoted_tournee)
+    # Make a few tries to try to get a good distance
+    for _ in range(10):
+        bef = time.perf_counter_ns()
+        tournee = desirability_path_search(
+            coords,
+            nb_era=nb_era, nb_sim_per_era=nb_sim_per_era,
+            start_index=start_index
+        )
+        aft = time.perf_counter_ns()
+        print(f'Path search took : {(aft - bef)*1e-9:.2e}s', flush=True)
+
+        print(f'Unknoting took : {(aft - bef)*1e-9:.2e}s', flush=True)
+        path_distance = util.distance_avec_entree(tournee)
+        print(f'Path total distance : {path_distance}', flush=True)
+        # needs tuning depending on the threshold that we want shown values
+        # to fulfill, here 680 is a quite good distance for this algorithm
+        # on the exemple_2.txt data set
+        if path_distance < 680:
+            util.affiche_tournee(tournee)
+            print('printed', flush=True)
+    plt.show()

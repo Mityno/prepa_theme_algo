@@ -5,35 +5,26 @@ import time
 from matplotlib import pyplot as plt
 import bruteforces
 
+# Les différents calculs de tournee se font à partir des programmes des autres
+# fichiers, chaque fichier contient un code pour exécuter directement des
+# tests sur les différents jeu de données disponibles.
+# Ce fichier contient le test des deux algorithmes de force brute sur les
+# données de l'exemple 1
 
-def calcule_tournee(coords):
-    return coords  # A MODIFIER
-
-
-coords = util.lire_fichier_coords("exemple_2.txt")[35:50]
+coords = util.lire_fichier_coords("exemple_1.txt")
 coords = list(map(tuple, coords))
-print(len(coords))
 
-# coords = util.lire_fichier_coords("exemple_1.txt")
-# print(coords)
-
-# bef = time.perf_counter()
-# result_backtracking = bruteforces.bruteforce_backtracking(coords)
-# aft = time.perf_counter()
+bef = time.perf_counter()
+result_bruteforce = bruteforces.bruteforce(coords)
+aft = time.perf_counter()
 
 bef2 = time.perf_counter()
-result_backtracking_2 = bruteforces.bruteforce_backtracking_2(tuple(coords))
+result_backtracking = bruteforces.bruteforce_backtracking(coords)
 aft2 = time.perf_counter()
 
-# result_bruteforce = bruteforces.bruteforce(coords)
-
-# assert util.distance_avec_entree(result_bruteforce) == util.distance_avec_entree(result_backtracking)
-
-# print(f'Temps d\'exécution 1 : {aft - bef:.2e}')
-print(f'Temps d\'exécution 2 : {aft2 - bef2:.2e}')
-# print('Distance finale :', util.distance_avec_entree(result_bruteforce))
+print(f'Temps d\'exécution 1 : {aft - bef:.2e}s')
+print(f'Temps d\'exécution 2 : {aft2 - bef2:.2e}s')
 print(flush=True)
 
-# util.affiche_tournee(result_bruteforce, show=False)
-util.affiche_tournee(result_backtracking_2, show=False)
-# util.affiche_tournee(result_backtracking)
+util.affiche_tournee(result_bruteforce, show=False)
+util.affiche_tournee(result_backtracking)

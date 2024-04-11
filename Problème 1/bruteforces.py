@@ -54,3 +54,7 @@ def bruteforce_backtracking(coords):
     coords = list(map(tuple, coords))
     inner(set(coords), [])
     return solution
+
+
+if __name__ == '__main__':
+    pass
