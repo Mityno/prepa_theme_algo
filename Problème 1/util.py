@@ -81,9 +81,9 @@ def unknot_path(path):
                     c3_c4_coef = c3_relative_pos * c4_relative_pos
                 else:
                     if y3 < y4:
-                        c3_c4_coef = -1 if y3 < y1 < y4 else 1
+                        c3_c4_coef = -1 if y3 <= y1 <= y4 else 1
                     else:
-                        c3_c4_coef = -1 if y4 < y1 < y3 else 1
+                        c3_c4_coef = -1 if y4 <= y1 <= y3 else 1
 
                 # check if (c1, c2) intersect (c3, c4)
                 if y3 != y4:
@@ -93,9 +93,9 @@ def unknot_path(path):
                     c1_c2_coef = c1_relative_pos * c2_relative_pos
                 else:
                     if y1 < y2:
-                        c1_c2_coef = -1 if y1 < y3 < y2 else 1
+                        c1_c2_coef = -1 if y1 <= y3 <= y2 else 1
                     else:
-                        c1_c2_coef = -1 if y2 < y3 < y1 else 1
+                        c1_c2_coef = -1 if y2 <= y3 <= y1 else 1
 
                 # if there is no intersection
                 if not (c1_c2_coef < 0 and c3_c4_coef < 0):
