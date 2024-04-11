@@ -78,7 +78,7 @@ coords = util.lire_fichier_coords('exemple_2.txt')
 # Settings
 dist_pow = 8
 weight_pow = 3
-nb_era = 300
+nb_era = 600
 nb_sim_per_era = 20
 
 bef = time.perf_counter()
