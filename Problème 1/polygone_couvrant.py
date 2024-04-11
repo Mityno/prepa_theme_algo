@@ -79,7 +79,7 @@ def path(coords: list[tuple]):
 
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    coords = util.lire_fichier_coords(r'exemple_2.txt')[50:61]
     coords = list(map(tuple, coords))
     # print(coords)
 
@@ -98,10 +98,10 @@ if __name__ == '__main__':
     plt.scatter(xp, yp)
     plt.show()
 
-    bef = time.perf_counter()
+    bef = time.perf_counter_ns()
     polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
-    aft = time.perf_counter()
-    print(f'Polygon took : {aft - bef:.2f}s')
+    aft = time.perf_counter_ns()
+    print(f'Polygon took : {(aft - bef)*1e-9:.2e}s')
 
     start_pos = polygon_couvrant.index((0, 0))
     polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
