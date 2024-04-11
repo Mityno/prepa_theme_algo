@@ -18,7 +18,7 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 
     while coords:
         min_coord = None
-        min_updated_distance = float('inf')
+        min_updated_distance = float("inf")
         min_coord_pos = None
 
         last_polygon_distance = util.distance_totale_chemin(polygon_summits)
@@ -27,8 +27,12 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
         for coord in coords:
             for i in range(1, len(polygon_summits)):
                 curr_distance = last_polygon_distance
-                curr_distance -= util.distance(polygon_summits[i-1], polygon_summits[i])
-                curr_distance += util.distance(polygon_summits[i-1], coord) + util.distance(coord, polygon_summits[i])
+                curr_distance -= util.distance(
+                    polygon_summits[i - 1], polygon_summits[i]
+                )
+                curr_distance += util.distance(
+                    polygon_summits[i - 1], coord
+                ) + util.distance(coord, polygon_summits[i])
 
                 if curr_distance < min_updated_distance:
                     min_coord = coord
@@ -48,9 +52,9 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
             plt.scatter(xp, yp)
             plt.show()
 
-
     polygon_summits.pop()
     return polygon_summits
+
 
 # Pour trouver le polygone entourant initial :
 # 1. On construit un polygone entourant en itérant sur les points les plus
@@ -61,10 +65,12 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 
 
 def path(coords: list[tuple]):
-    coords.append((0,0))
+    coords.append((0, 0))
 
     polygon_summits = graham_scan(coords)
-    polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
+    polygon_summits = sorted(
+        set(polygon_summits), key=lambda coord: polygon_summits.index(coord)
+    )
 
     polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
 
@@ -76,23 +82,24 @@ def path(coords: list[tuple]):
     return polygon_couvrant, util.distance_avec_entree(polygon_couvrant)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'exemple_2.txt')
+    coords = util.lire_fichier_coords(r"exemple_2.txt")
     coords = list(map(tuple, coords))
     # print(coords)
 
     plt.scatter(*zip(*coords), s=10)
     bef = time.perf_counter()
     polygon_summits = graham_scan(coords)
-    polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
+    polygon_summits = sorted(
+        set(polygon_summits), key=lambda coord: polygon_summits.index(coord)
+    )
     aft = time.perf_counter()
-    print(f'Convex hull took : {aft - bef:.2e}s')
+    print(f"Convex hull took : {aft - bef:.2e}s")
 
     xs, ys = zip(*coords)
     plt.scatter(xs, ys)
-    xp, yp = zip(*(polygon_summits+[polygon_summits[0]]))
+    xp, yp = zip(*(polygon_summits + [polygon_summits[0]]))
     plt.plot(xp, yp)
     plt.scatter(xp, yp)
     plt.show()
@@ -100,7 +107,7 @@ if __name__ == '__main__':
     bef = time.perf_counter_ns()
     polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
     aft = time.perf_counter_ns()
-    print(f'Polygon took : {(aft - bef)*1e-9:.2e}s')
+    print(f"Polygon took : {(aft - bef)*1e-9:.2e}s")
 
     start_pos = polygon_couvrant.index((0, 0))
     # polygon_couvrant = rotate_list(polygon_couvrant, start_pos)

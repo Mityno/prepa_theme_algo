@@ -47,7 +47,7 @@ def desirability_path_search(coords, nb_era=50, nb_sim_per_era=10, start_index=N
     dist_mat = np.array([
         [util.distance(c1, c2) if not np.array_equal(c1, c2) else float('inf')
          for c2 in coords
-        ] for c1 in coords
+         ] for c1 in coords
     ])
 
     for era_index in range(1, nb_era + 1):
@@ -76,9 +76,9 @@ coords = util.lire_fichier_coords('exemple_2.txt')
 (start_index, ), = np.where((coords == (0, 0)).sum(axis=1) == 2)
 
 # Settings
-dist_pow = 8
-weight_pow = 3
-nb_era = 600
+dist_pow = 10
+weight_pow = 1
+nb_era = 700
 nb_sim_per_era = 20
 
 bef = time.perf_counter()

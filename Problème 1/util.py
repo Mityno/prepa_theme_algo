@@ -7,6 +7,7 @@ def random_coords(n) -> list[tuple[float, float]]:
     coords = np.random.normal(loc=0, scale=25, size=(n, 2))
     return list(map(tuple, coords))
 
+
 def lire_fichier_coords(nom_fichier):
     coords = []
     with open(nom_fichier) as f:
@@ -56,7 +57,6 @@ def affiche_tournee(coords, show=True):
 
 
 def unknot_path(path):
-    knot_exist = True
     path = list(map(tuple, path))
     longest_intersection = 'not none'
 
