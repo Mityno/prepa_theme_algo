@@ -61,7 +61,8 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 
 
 def path_finder(coords: list[tuple[float, float]], quiet: bool = True) -> list[tuple[float, float]]:
-    coords.append((0,0))
+    if not (0,0) in coords:
+        coords.append((0,0))
 
     polygon_summits = graham_scan(coords)
     polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
@@ -89,9 +90,12 @@ def path_finder(coords: list[tuple[float, float]], quiet: bool = True) -> list[t
 
 
 if __name__ == '__main__':
-    coords = util.lire_fichier_coords(r'Problème 1\exemple_nathael_ninon.txt')
+    # coords = util.lire_fichier_coords(r'Problème 1\exemple_nathael_ninon.txt')
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    coords = util.lire_fichier_coords(r'Problème 1\exemple_losange_dense.txt')
+
     coords = list(map(tuple, coords))
+    # coords = util.random_coords(80)
     
     polygon_path = path_finder(coords, quiet=False)
 

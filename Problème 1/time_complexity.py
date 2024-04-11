@@ -4,17 +4,12 @@ import util
 import convex_path
 import time
 
-def random_coords(n):
-    coords = np.random.normal(loc=0, scale=25, size=(n, 2))
-    return list(map(tuple, coords))
-
-
 
 def main() -> None:
     N = np.linspace(50, 600, num=70, dtype=int)
     t = np.zeros(70)
     for i, n in np.ndenumerate(N):
-        coords = random_coords(n)
+        coords = util.random_coords(n)
         start_time = time.perf_counter()
         convex_path.path(coords)
         end_time = time.perf_counter()
