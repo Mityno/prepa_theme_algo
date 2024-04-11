@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def random_coords(n) -> list[tuple[float, float]]:
-    coords = np.random.normal(loc=0, scale=25, size=(n, 2))
+    coords = np.random.normal(loc=0, scale=25, size=(n, 2)).round(3)
     return list(map(tuple, coords))
 
 def lire_fichier_coords(nom_fichier):

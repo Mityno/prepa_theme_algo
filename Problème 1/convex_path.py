@@ -91,7 +91,10 @@ def path_finder(coords: list[tuple[float, float]], quiet: bool = True) -> list[t
 
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    coords = util.lire_fichier_coords(r'Problème 1\exemple_1.txt')
+    # coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    # coords = util.lire_fichier_coords(r'Problème 1\exemple_3.txt')
+    # coords = util.lire_fichier_coords(r'Problème 1\exemple_4.txt')
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_losange_dense.txt')
 
     coords = list(map(tuple, coords))
@@ -100,7 +103,7 @@ if __name__ == '__main__':
     start_time = time.perf_counter()
     polygon_path = path_finder(coords, quiet=True)
     end_time = time.perf_counter()
-    print(f'{path_finder.__name__} took {end_time - start_time:.2f}s to run')
+    print(f'{path_finder.__name__} took {end_time - start_time:.3f}s to run')
 
     util.affiche_tournee(polygon_path, show=False)
 
@@ -109,3 +112,4 @@ if __name__ == '__main__':
     # util.affiche_tournee(result_backtracking, show=False)
 
     plt.show()
+
