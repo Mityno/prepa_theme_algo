@@ -60,51 +60,56 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 # 2. On fait la même chose, mais sans s'arrêter : on trouve un chemin convexe qui "minimise" la distance
 
 
-def path_finder(coords: list[tuple[float, float]], quiet: bool = True) -> list[tuple[float, float]]:
-    if not (0,0) in coords:
-        coords.append((0,0))
+def path(coords: list[tuple]):
+    coords.append((0,0))
 
     polygon_summits = graham_scan(coords)
     polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
 
-    if not quiet:
-        # Affichage des points et de leur enveloppe convexe
-        xs, ys = zip(*coords)
-        plt.scatter(xs, ys)
-        xp, yp = zip(*(polygon_summits+[polygon_summits[0]]))
-        plt.plot(xp, yp)
-        plt.scatter(xp, yp)
-        plt.show()
+    polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
 
-    # Transformation de l'enveloppe en chemin valide
-    polygon_path = reduction_polygone_couvrant(coords.copy(), polygon_summits)
+    start_pos = polygon_couvrant.index((0, 0))
+    polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
 
-    # Réorganisation du chemin pour qu'il démarre en (0,0)
-    start_pos = polygon_path.index((0, 0))
-    polygon_path = rotate_list(polygon_path, start_pos)
-
-    polygon_path.remove((0, 0))
+    polygon_couvrant.remove((0, 0))
     coords.remove((0, 0))
-    return polygon_path
+    return polygon_couvrant, util.distance_avec_entree(polygon_couvrant)
 
 
 
 if __name__ == '__main__':
-    # coords = util.lire_fichier_coords(r'Problème 1\exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
-    # coords = util.lire_fichier_coords(r'Problème 1\exemple_losange_dense.txt')
-
+    # coords = util.lire_fichier_coords('exemple_nathael_ninon.txt')
+    coords = util.lire_fichier_coords(r'exemple_2.txt')[50:61]
     coords = list(map(tuple, coords))
-    # coords = util.random_coords(80)
-    
-    start_time = time.perf_counter()
-    polygon_path = path_finder(coords, quiet=True)
-    end_time = time.perf_counter()
-    print(f'{path_finder.__name__} took {end_time - start_time:.2f}s to run')
+    # print(coords)
 
-    util.affiche_tournee(polygon_path, show=False)
+    coords.append((0, 0))
+    plt.scatter(*zip(*coords), s=10)
+    bef = time.perf_counter()
+    polygon_summits = graham_scan(coords)
+    polygon_summits = sorted(set(polygon_summits), key=lambda coord: polygon_summits.index(coord))
+    aft = time.perf_counter()
+    print(f'Convex hull took : {aft - bef:.2e}s')
 
-    # Si coords compte suffisamment peu (<12), on peut comparer avec la solution optimale obtenue en bruteforce
+    xs, ys = zip(*coords)
+    plt.scatter(xs, ys)
+    xp, yp = zip(*(polygon_summits+[polygon_summits[0]]))
+    plt.plot(xp, yp)
+    plt.scatter(xp, yp)
+    plt.show()
+
+    bef = time.perf_counter_ns()
+    polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
+    aft = time.perf_counter_ns()
+    print(f'Polygon took : {(aft - bef)*1e-9:.2e}s')
+
+    start_pos = polygon_couvrant.index((0, 0))
+    polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
+    polygon_couvrant.remove((0, 0))
+
+    coords.remove((0, 0))
+    util.affiche_tournee(polygon_couvrant, show=False)
+
     # result_backtracking = bruteforces.bruteforce_backtracking(coords)
     # util.affiche_tournee(result_backtracking, show=False)
 
