@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import util
-import polygone_couvrant
+import convex_path
 import time
 
 def random_coords(n):
@@ -16,7 +16,7 @@ def main() -> None:
     for i, n in np.ndenumerate(N):
         coords = random_coords(n)
         start_time = time.perf_counter()
-        polygone_couvrant.path(coords)
+        convex_path.path(coords)
         end_time = time.perf_counter()
         t[i] = end_time - start_time
         print(f'Itération {i[0]} ; Taille {n} ; Temps {t[i]}')
