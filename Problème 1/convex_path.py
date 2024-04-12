@@ -91,8 +91,8 @@ def path_finder(coords: list[tuple[float, float]], quiet: bool = True) -> list[t
 
 if __name__ == '__main__':
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_nathael_ninon.txt')
-    coords = util.lire_fichier_coords(r'Problème 1\exemple_1.txt')
-    # coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
+    # coords = util.lire_fichier_coords(r'Problème 1\exemple_1.txt')
+    coords = util.lire_fichier_coords(r'Problème 1\exemple_2.txt')
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_3.txt')
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_4.txt')
     # coords = util.lire_fichier_coords(r'Problème 1\exemple_losange_dense.txt')

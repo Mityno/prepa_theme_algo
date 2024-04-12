@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import util
 import convex_path
 import time
+from jardinier_especes_en_danger import espèces_en_danger
 
 
 def main() -> None:
@@ -10,8 +11,9 @@ def main() -> None:
     t = np.zeros(70)
     for i, n in np.ndenumerate(N):
         coords = util.random_coords(n)
+        coords.insert(0, (0., 0.))
         start_time = time.perf_counter()
-        convex_path.path(coords)
+        espèces_en_danger(coords)
         end_time = time.perf_counter()
         t[i] = end_time - start_time
         print(f'Itération {i[0]} ; Taille {n} ; Temps {t[i]}')
@@ -23,7 +25,7 @@ def main() -> None:
     axes[1].plot(N, t/(N**3))
     axes[1].set_xlabel('Nombre de points n')
     axes[1].set_ylabel(r"Temps d'exécution divisé par $n^3$")
-    fig.suptitle('Complexité empirique de la méthode de l\'enveloppe convexe')
+    fig.suptitle('Complexité empirique de la méthode des espèces en danger')
     plt.show()
 
     return
