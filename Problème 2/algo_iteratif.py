@@ -1,5 +1,6 @@
 import util
 import collections
+import time
 
 
 def iterative_search(words, line_length):
@@ -56,14 +57,14 @@ def iterative_search(words, line_length):
             curr_state.pop()  # remove extra word
 
     i = 0
-    curr_state = collections.deque([i])
+    curr_state = [i]
     output_lines = [words[i]]
     while i < n - 1:
 
-        # suppose we add the next word, check the operation won't overflow the
+        # suppose we add the previous word, check the operation won't overflow the
         # current line, in which case make a new line
         if len(output_lines[-1]) + len(words[i + 1]) + 1 > line_length:
-            curr_state = collections.deque([i + 1])
+            curr_state = [i + 1]
             output_lines.append(words[i + 1])
             i += 1
             continue
@@ -71,7 +72,10 @@ def iterative_search(words, line_length):
         curr_state.append(i + 1)  # consider adding word i + 1 to the line
         add_score = scores[tuple(curr_state)]
         curr_state.pop()  # remove extra word
-        newline_score = scores[(i + 1,)] + scores[tuple(curr_state)]
+        newline_score = (
+            util.get_line_score(output_lines[-1], line_length)  # current line score
+            + scores[(i + 1,)]  # next line score
+        )
 
         # to minise the score, we apply the operation that has minimal score
         if add_score < newline_score:
@@ -79,7 +83,7 @@ def iterative_search(words, line_length):
             curr_state.append(i + 1)
         else:
             output_lines.append(words[i + 1])
-            curr_state = collections.deque([i + 1])
+            curr_state = [i + 1]
 
         i += 1
 
@@ -89,12 +93,19 @@ def iterative_search(words, line_length):
 
 
 if __name__ == '__main__':
+    line_length = 80
 
     # words = util.import_text_as_list('exemple_simple.txt')
     words = util.import_text_as_list('recherche_p1.txt')
     # words = util.import_text_as_list('recherche_complet.txt')
-    line_length = 80
+
+    bef = time.perf_counter()
     result_text, score = iterative_search(words, line_length)
+    aft = time.perf_counter()
+    print(f'Iterative search took : {aft - bef:.2e}s')
+
     print(score)
+    print(util.get_text_score(result_text, line_length))
+
     # with open('solution_complet.txt', mode='w') as file:
     #     file.write(result_text)
