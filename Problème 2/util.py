@@ -1,6 +1,6 @@
 
 
-def import_text_as_list(filename):
+def import_words_from_text(filename):
 
     with open(filename, mode='r') as file:
         datas = file.read()
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     line_length = 80
 
-    # text = import_text_as_list('recherche_p1.txt')
+    # text = import_words_from_text('recherche_p1.txt')
     # print(len(text))
     # print(text)
 

@@ -99,9 +99,9 @@ def iterative_search(words, line_length):
 if __name__ == '__main__':
     line_length = 80
 
-    # words = util.import_text_as_list('exemple_simple.txt')
-    # words = util.import_text_as_list('recherche_p1.txt')
-    words = util.import_text_as_list('recherche_complet.txt')
+    # words = util.import_words_from_text('exemple_simple.txt')
+    # words = util.import_words_from_text('recherche_p1.txt')
+    words = util.import_words_from_text('recherche_complet.txt')
 
     bef = time.perf_counter()
     result_text, score = iterative_search(words, line_length)

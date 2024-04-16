@@ -35,7 +35,7 @@ def least_squares(word_list, L):
 
 
 if __name__ =='__main__':
-    word_list = util.import_text_as_list('./Problème 2/recherche_complet.txt')
+    word_list = util.import_words_from_text('./Problème 2/recherche_complet.txt')
     # print(len(word_list))
     sys.setrecursionlimit(len(word_list)*10)
     deb = time.perf_counter()

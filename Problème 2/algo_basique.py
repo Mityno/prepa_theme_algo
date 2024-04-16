@@ -43,9 +43,9 @@ def search_best_line_length(text, max_line_length):
 
 if __name__ == '__main__':
 
-    text = util.import_text_as_list('exemple_simple.txt')
-    # text = util.import_text_as_list('recherche_p1.txt')  # max=80 => best=80 -> score=2515
-    # text = util.import_text_as_list('recherche_complet.txt')  # max=80 => best=80 -> score=1652570
+    text = util.import_words_from_text('exemple_simple.txt')
+    # text = util.import_words_from_text('recherche_p1.txt')  # max=80 => best=80 -> score=2515
+    # text = util.import_words_from_text('recherche_complet.txt')  # max=80 => best=80 -> score=1652570
     # line_length = 80
     # formated_text, spaces_counter = cut_on_line(text, line_length)
     # print('\n'.join(formated_text.split('\n')[2:5]))
