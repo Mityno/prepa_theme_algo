@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def rotate_list(lst, n):
+    return lst[n:] + lst[:n]
+
+
 def random_coords(n) -> list[tuple[float, float]]:
     coords = np.random.normal(loc=0, scale=25, size=(n, 2))
     return list(map(tuple, coords))
@@ -99,7 +103,7 @@ def unknot_path(path):
                 # if there is no intersection
                 if not (c1_c2_coef < 0 and c3_c4_coef < 0):
                     continue
-
+                # else
                 path[i + 1:j + 1] = path[i + 1:j + 1][::-1]
                 breaked = True
                 break

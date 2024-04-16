@@ -5,10 +5,6 @@ from convex_hull import graham_scan
 import time
 
 
-def rotate_list(lst, n):
-    return lst[n:] + lst[:n]
-
-
 def reduction_polygone_couvrant(coords, polygon_summits, show=False):
     # on enlève les coordonnées des sommets déjà atteints
     for summit in polygon_summits:
@@ -65,7 +61,8 @@ def reduction_polygone_couvrant(coords, polygon_summits, show=False):
 
 
 def path(coords: list[tuple]):
-    coords.append((0, 0))
+    if (0, 0) not in coords:
+        coords.append((0, 0))
 
     polygon_summits = graham_scan(coords)
     polygon_summits = sorted(
@@ -75,7 +72,7 @@ def path(coords: list[tuple]):
     polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
 
     start_pos = polygon_couvrant.index((0, 0))
-    polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
+    polygon_couvrant = util.rotate_list(polygon_couvrant, start_pos)
 
     polygon_couvrant.remove((0, 0))
     coords.remove((0, 0))
@@ -83,8 +80,8 @@ def path(coords: list[tuple]):
 
 
 if __name__ == "__main__":
-    coords = util.lire_fichier_coords('exemple_losange_dense.txt')
-    # coords = util.lire_fichier_coords(r"exemple_2.txt")
+    # coords = util.lire_fichier_coords('exemple_losange_dense.txt')
+    coords = util.lire_fichier_coords(r"exemple_2.txt")
     coords = list(map(tuple, coords))
     # print(coords)
 
@@ -106,12 +103,13 @@ if __name__ == "__main__":
 
     bef = time.perf_counter_ns()
     polygon_couvrant = reduction_polygone_couvrant(coords.copy(), polygon_summits)
+    print(len(polygon_couvrant))
     aft = time.perf_counter_ns()
     print(f"Polygon took : {(aft - bef)*1e-9:.2e}s")
 
     start_pos = polygon_couvrant.index((0, 0))
-    # polygon_couvrant = rotate_list(polygon_couvrant, start_pos)
-    polygon_couvrant = rotate_list(polygon_couvrant, start_pos + 1)
+    # polygon_couvrant = util.rotate_list(polygon_couvrant, start_pos)
+    polygon_couvrant = util.rotate_list(polygon_couvrant, start_pos + 1)
     print(polygon_couvrant)
     polygon_couvrant.pop()
 
