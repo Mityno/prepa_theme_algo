@@ -1,5 +1,7 @@
 import numpy as np
 import util
+import sys
+import time
 
 
 def aux(end_space, index, word_list, L, mem_dict):
@@ -33,8 +35,12 @@ def least_squares(word_list, L):
 
 
 if __name__ =='__main__':
-    word_list = util.import_text_as_list('./Problème 2/recherche_p1.txt')
-    # print(word_list)
+    word_list = util.import_text_as_list('./Problème 2/recherche_complet.txt')
+    # print(len(word_list))
+    sys.setrecursionlimit(len(word_list)*10)
+    deb = time.perf_counter()
     print(least_squares(word_list, 80))
+    fin = time.perf_counter()
+    print(f'{least_squares.__name__} took {fin - deb:.3f}s to run')
 
     
