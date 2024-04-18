@@ -2,6 +2,7 @@ import numpy as np
 import util
 import sys
 import time
+import json
 
 
 def least_squares(word_list: list[str], L: int) -> tuple[int, str]:
@@ -69,18 +70,38 @@ def least_squares(word_list: list[str], L: int) -> tuple[int, str]:
 
 
 if __name__ =='__main__':
-    word_list = util.import_words_from_text('./Problème 2/recherche_complet.txt')
-    # print(len(word_list))
-    sys.setrecursionlimit(len(word_list)*10)
-    deb = time.perf_counter()
-    least_error, result_text = least_squares(word_list, 80)
-    print(least_error)
-    fin = time.perf_counter()
-    print(f'{least_squares.__name__} took {fin - deb:.3f}s to run')
+    # word_list = util.import_words_from_text('recherche_complet.txt')
+    # # print(len(word_list))
+    # deb = time.perf_counter_ns()
+    # least_error, result_text = least_squares(word_list, 80)
+    # fin = time.perf_counter_ns()
+    # print(least_error)
+    # print(f'{least_squares.__name__} took {(fin - deb)*1e-9:.3e}s to run')
 
     # with open('./Problème 2/solution_complet.txt', mode='w') as file:
     #     file.write(result_text)
     
+    n = 50_000
 
+    words = util.import_words_from_text(r'recherche_complet.txt')
+    words = words[:n]
+    sys.setrecursionlimit(len(words) * 10)
 
-    
+    min_line_length = max(map(len, words))
+    print(min_line_length, max(words, key=len))
+    line_lengths = np.linspace(min_line_length, 250, 80, dtype=int)
+    times = []
+
+    for line_length in line_lengths:
+
+        bef = time.perf_counter_ns()
+        result_text, score = least_squares(words, line_length)
+        aft = time.perf_counter_ns()
+        times.append((aft - bef) * 1e-9)
+        print(f'Iterative search took : {(aft - bef)*1e-9:.2e}s, {line_length = }', flush=True)
+
+    line_lengths = list(map(int, line_lengths))
+
+    with open('time_testing.txt', mode='a') as file:
+        json.dump([line_lengths, times], file)
+        file.write('\n')
