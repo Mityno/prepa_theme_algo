@@ -43,22 +43,23 @@ def search_best_line_length(text, max_line_length):
 
 if __name__ == '__main__':
 
-    text = util.import_words_from_text('exemple_simple.txt')
+    # text = util.import_words_from_text('exemple_simple.txt')
     # text = util.import_words_from_text('recherche_p1.txt')  # max=80 => best=80 -> score=2515
-    # text = util.import_words_from_text('recherche_complet.txt')  # max=80 => best=80 -> score=1652570
-    # line_length = 80
-    # formated_text, spaces_counter = cut_on_line(text, line_length)
+    text = util.import_words_from_text('recherche_complet.txt')  # max=80 => best=80 -> score=1652570
+    line_length = 80
+    formated_text, spaces_counter = cut_on_line(text, line_length)
+    print(util.get_score(spaces_counter))
     # print('\n'.join(formated_text.split('\n')[2:5]))
     # line_length, score = search_best_line_length(text, line_length)
 
     # for line_length in (79, 80):
-    for line_length in (20,):
-        print(line_length)
-        output_text, spaces_counter = cut_on_line(text, line_length)
-        print(util.get_score(spaces_counter))
-        # print(len(output_text.split('\n')))
-        print(output_text)
-        print()
+    # for line_length in (20,):
+    #     print(line_length)
+    #     output_text, spaces_counter = cut_on_line(text, line_length)
+    #     print(util.get_score(spaces_counter))
+    #     # print(len(output_text.split('\n')))
+    #     print(output_text)
+        # print()
     # print(line_length)
     # print(score)
     # print(util.get_score(spaces_counter))
