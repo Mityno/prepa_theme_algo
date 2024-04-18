@@ -8,7 +8,7 @@ import sys
 
 
 def main() -> None:
-    big_word_list = util.import_text_as_list('./Problème 2/recherche_complet.txt')
+    big_word_list = util.import_words_from_text('./Problème 2/recherche_complet.txt')
     nb_values = 100
     N = np.linspace(500, len(big_word_list), num=nb_values, dtype=int)
     t = np.zeros(nb_values)
