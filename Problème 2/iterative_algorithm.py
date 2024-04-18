@@ -13,7 +13,7 @@ def iterative_search(words, line_length):
     i = n - 1
     # curr_state is of the form
     # [line first word index, number of word on the line after the first one]
-    curr_state = [i, 0]
+    curr_state: list[int] = [i, 0]
     curr_len = len(words[i])
     scores[*curr_state] = (line_length - curr_len)**2
     for j in range(i - 1, -1, -1):
@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
     # words = util.import_words_from_text('exemple_simple.txt')
     # words = util.import_words_from_text('recherche_p1.txt')
-    words = util.import_words_from_text('recherche_complet.txt')
+    words = util.import_words_from_text(r'.\Problème 2\recherche_complet.txt')
 
     bef = time.perf_counter()
     result_text, score = iterative_search(words, line_length)

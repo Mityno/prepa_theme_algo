@@ -50,6 +50,7 @@ def least_squares(word_list, L):
         line_list[-1].append(word)
 
     line_list = [' '.join(line) for line in line_list]
+    line_list = [f'{line:{L}}' for line in line_list]
     result_text = '\n'.join(line_list)
     return least_error, result_text
 
