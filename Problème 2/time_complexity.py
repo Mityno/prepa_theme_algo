@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import util
 import recursive_algorithm
+import algo_iteratif
 import time
 import sys
 
@@ -15,7 +16,7 @@ def main() -> None:
         word_list = big_word_list[:n]
         sys.setrecursionlimit(len(word_list)*10)
         start_time = time.perf_counter()
-        recursive_algorithm.least_squares(word_list, 80)
+        algo_iteratif.iterative_search(word_list, 80)
         end_time = time.perf_counter()
         t[i] = end_time - start_time
         print(f'Itération {i[0]} ; Taille {n} ; Temps {t[i]}', flush=True)
